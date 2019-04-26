@@ -64,17 +64,29 @@ nRepRusia <- c(1:1000)
 for (i in 1000) {
   nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia)
 }
+
+#- La probabilidad de completar el ´album con 800 sobres o menos.
 valorProb <- 0
 for (i in nRepRusia) {
   if (i > 800){
     valorProb = valorProb + 1
   }
 }
-print(valorProb/1000)
+x <-valorProb/1000
+print(paste(c("probabilidad de completar el album con 800 sobres es", x), collapse = " "))
 
-
-#- La probabilidad de completar el ´album con 800 sobres o menos.
 #- La cantidad de sobres que hacen falta comprar para completar el album con probabilidad mayor o igual a 0.9.
+valorProb <- 0
+sobres <- 100
+for (i in nRepRusia) {
+  if (i > sobres){
+    valorProb = valorProb + 1
+  }
+}
+x<-valorProb/1000
+print(paste(c("para que la probabilidad de completar el albun sea mayor o igual a 0.9 se necesitan ", sobres), collapse = " "))
+print(paste(c("con 100 sobres la probabilidad es ", x), collapse = " "))
+
 #- El valor esperado de la cantidad de sobres necesarios para completar el ´album del mundial de Rusia.
 #- El desvio estandar de la cantidad de sobres necesarios para completar el ´album.
 
