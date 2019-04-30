@@ -18,11 +18,8 @@ album_lleno = function(album){
   return(r)
 }
 #ejercicio 3
-generar_sobre = function(tam_album, tam_sobre){
-  sobre <- c(1:tam_sobre)
-  for (l in 1:tam_sobre) {
-    sobre[l] = sample(tam_album,1)
-  }
+generar_sobre = function(tam_album, tam_sobre,repetidos=FALSE){
+  sobre <- sample(tam_album,tam_sobre,replace=repetidos)
   return(sobre)
 }
 
@@ -35,7 +32,7 @@ pegar_sobre = function(album,  sobre){
 }
 
 #ejercicio 5
-cuantas_figuritas = function(tam_album, tam_sobre){
+cuantas_figuritas = function(tam_album, tam_sobre,repetidos=FALSE){
   estaCompleto <- FALSE
   album1 <- rep(FALSE,tam_album)
   contAlbum <- 0
@@ -49,7 +46,6 @@ cuantas_figuritas = function(tam_album, tam_sobre){
   return(contAlbum)
 }
 
-
 #ej 6
 print(cuantas_figuritas(6,1))
 print(cuantas_figuritas(6,1))
@@ -60,33 +56,96 @@ print(cuantas_figuritas(6,1))
 #genero la muestra
 tam_rusia <- 670
 tam_sobreRusia <- 5
-nRepRusia <- c(1:1000)
-for (i in 1000) {
+tam_muestra <-1000
+nRepRusia <- c(1:tam_muestra)
+for (i in 1:tam_muestra) {
   nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia)
 }
+#print(nRepRusia)
 
-#- La probabilidad de completar el ´album con 800 sobres o menos.
-valorProb <- 0
-for (i in nRepRusia) {
-  if (i > 800){
-    valorProb = valorProb + 1
+probSobres = function(nRepRusia,limite,tam_muestra){
+  valorProb <- 0
+  for (i in nRepRusia) {
+    if (i <= limite){
+      valorProb = valorProb + 1
+    }
   }
+  x <-valorProb/tam_muestra
+  return(x)
 }
-x <-valorProb/1000
-print(paste(c("probabilidad de completar el album con 800 sobres es", x), collapse = " "))
+
 
 #- La cantidad de sobres que hacen falta comprar para completar el album con probabilidad mayor o igual a 0.9.
-valorProb <- 0
-sobres <- 100
-for (i in nRepRusia) {
-  if (i > sobres){
-    valorProb = valorProb + 1
+sobres_necesarios = function(nRepRusia,tam_muestra,cantSobresInicial){
+  proba<-0
+  cantSobres<-cantSobresInicial
+  while(proba<0.9){
+    proba <- probSobres(nRepRusia,cantSobres,tam_muestra)
+    cantSobres<-cantSobres+10
   }
+  return(cantSobres)
 }
-x<-valorProb/1000
-print(paste(c("para que la probabilidad de completar el albun sea mayor o igual a 0.9 se necesitan ", sobres), collapse = " "))
-print(paste(c("con 100 sobres la probabilidad es ", x), collapse = " "))
 
 #- El valor esperado de la cantidad de sobres necesarios para completar el ´album del mundial de Rusia.
-#- El desvio estandar de la cantidad de sobres necesarios para completar el ´album.
+esperanza = function(nRepRusia,tam_muestra,min,max){
+  esperanza <-0
+  for(i in min:max){
+    probmenos1 <-probSobres(nRepRusia,i-1,tam_muestra)
+    prob <-probSobres(nRepRusia,i,tam_muestra)-probmenos1
+    esperanza <- esperanza + i*prob
+  }
+  return(esperanza)
+}
 
+#itero y obtengo la probabilidad que necesite 1 sobre por 1, mas la que necesite 2, etc.
+#- El desvio estandar de la cantidad de sobres necesarios para completar el ´album.
+desvio = function(nRepRusia,tam_muestra){
+  minimo<-min(nRepRusia)
+  maximo<-max(nRepRusia)
+  esp <- esperanza(nRepRusia,tam_muestra,minimo,maximo)
+  esperanza2 <-0
+  for(i in minimo:maximo){
+    probmenos1<-probSobres(nRepRusia,i-1,tam_muestra)
+    prob <-probSobres(nRepRusia,i,tam_muestra)-probmenos1
+    
+    esperanza2 <- esperanza2 + i*i*prob
+  }
+  espAl2<-esp*esp
+  varianza<- esperanza2 - espAl2
+  print(paste(c('la varianza es ',varianza)))
+  desvio<-sqrt(varianza)
+  return(desvio)
+}
+
+#-OBJETIVO 1=- La probabilidad de completar el ´album con 800 sobres o menos.
+print(paste(c("probabilidad de completar el album con 800 sobres es", probSobres(nRepRusia,800,tam_muestra)), collapse = " "))
+
+#OBJETIVO 2= La cantidad de sobres que hacen falta comprar para completar el album con probabilidad mayor o igual a 0.9.
+sobresNec <-  sobres_necesarios(nRepRusia,tam_muestra,67)
+print(paste(c("para que la probabilidad de completar el albun sea mayor o igual a 0.9 se necesitan ",sobresNec), collapse = " "))
+
+#OBJETIVO 3= El valor esperado de la cantidad de sobres necesarios para completar el ´album del mundial de Rusia.
+esp<-esperanza(nRepRusia ,tam_muestra,min(nRepRusia),max(nRepRusia))
+print(paste(c('La esperanza es ',esp,collapse=' ')))
+
+#OBJETIVO 4= El desvio estandar de la cantidad de sobres necesarios para completar el ´album
+print(paste(c('El desvio estandar es ',desvio(nRepRusia,tam_muestra)),collapse=' '))
+#Dibujo la distribucion
+hist(nRepRusia)
+
+#ejercicio 8
+
+nRepRusiaSinRepetidos <- c(1:tam_muestra)
+for (i in 1:tam_muestra) {
+  nRepRusiaSinRepetidos[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia)
+}
+
+
+print(paste(c("probabilidad de completar el album con 800 sobres es Sin figuritas repetidas", probSobres(nRepRusiaSinRepetidos,800,tam_muestra)), collapse = " "))
+
+sobresNec <-  sobres_necesarios(nRepRusiaSinRepetidos,tam_muestra,67)
+print(paste(c("para que la probabilidad de completar el album sin figuritas repetidas sea mayor o igual a 0.9 se necesitan ",sobresNec), collapse = " "))
+esp<-esperanza(nRepRusiaSinRepetidos ,tam_muestra,min(nRepRusiaSinRepetidos),max(nRepRusiaSinRepetidos))
+print(paste(c('La esperanza sin figuritas repetidas es ',esp,collapse=' ')))
+print(paste(c('El desvio estandar sin figuritas repetidas es ',desvio(nRepRusiaSinRepetidos,tam_muestra)),collapse=' '))
+hist(nRepRusiaSinRepetidos)
