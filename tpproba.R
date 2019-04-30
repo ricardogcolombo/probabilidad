@@ -19,12 +19,14 @@ album_lleno = function(album){
 }
 #ejercicio 3
 generar_sobre = function(tam_album, tam_sobre,repetidos=FALSE){
+  # el booleano en replace hace que me de repetidos o no dentro del sobre
   sobre <- sample(tam_album,tam_sobre,replace=repetidos)
   return(sobre)
 }
 
 #ejercicio 4
 pegar_sobre = function(album,  sobre){
+  #recorro el sobre y pongo true en la posicion de la figurita
   for (i in sobre) {
     album[i] = TRUE
   }
@@ -36,32 +38,28 @@ cuantas_figuritas = function(tam_album, tam_sobre,repetidos=FALSE){
   estaCompleto <- FALSE
   album1 <- rep(FALSE,tam_album)
   contAlbum <- 0
-  
+  #mientras no este completo
   while(!estaCompleto){
-    sobre = generar_sobre(tam_album, tam_sobre)
+    #genero uso sobre
+    sobre = generar_sobre(tam_album, tam_sobre,repetidos)
+    #pego las figuritas
     album1 <- pegar_sobre(album1,sobre)
+    #contabilizo un sobre mas
     contAlbum <-contAlbum +1
+    #chequeo si no esta completo el album
     estaCompleto <- album_lleno(album1)
   }
   return(contAlbum)
 }
 
 #ej 6
+#Simule 3 veces el llenado de un album con 6 figuritas y sobres de 1 figurita
 print(cuantas_figuritas(6,1))
 print(cuantas_figuritas(6,1))
 print(cuantas_figuritas(6,1))
 
 #ej 7
-#tam rusia 670
-#genero la muestra
-tam_rusia <- 670
-tam_sobreRusia <- 5
-tam_muestra <-1000
-nRepRusia <- c(1:tam_muestra)
-for (i in 1:tam_muestra) {
-  nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia)
-}
-#print(nRepRusia)
+
 
 probSobres = function(nRepRusia,limite,tam_muestra){
   valorProb <- 0
@@ -117,6 +115,17 @@ desvio = function(nRepRusia,tam_muestra){
   return(desvio)
 }
 
+#tam rusia 670
+#genero la muestra
+tam_rusia <- 670
+tam_sobreRusia <- 5
+tam_muestra <-1000
+nRepRusia <- c(1:tam_muestra)
+for (i in 1:tam_muestra) {
+  nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,FALSE)
+}
+#print(nRepRusia)
+
 #-OBJETIVO 1=- La probabilidad de completar el ´album con 800 sobres o menos.
 print(paste(c("probabilidad de completar el album con 800 sobres es", probSobres(nRepRusia,800,tam_muestra)), collapse = " "))
 
@@ -137,15 +146,20 @@ hist(nRepRusia)
 
 nRepRusiaSinRepetidos <- c(1:tam_muestra)
 for (i in 1:tam_muestra) {
-  nRepRusiaSinRepetidos[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia)
+  nRepRusiaSinRepetidos[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,TRUE)
 }
 
-
+#-OBJETIVO 1=- La probabilidad de completar el ´album con 800 sobres o menos.
 print(paste(c("probabilidad de completar el album con 800 sobres es Sin figuritas repetidas", probSobres(nRepRusiaSinRepetidos,800,tam_muestra)), collapse = " "))
 
-sobresNec <-  sobres_necesarios(nRepRusiaSinRepetidos,tam_muestra,67)
+#OBJETIVO 2= La cantidad de sobres que hacen falta comprar para completar el album con probabilidad mayor o igual a 0.9.
+sobresNec <-  sobres_necesarios(nRepRusiaSinRepetidos,tam_muestra,600)
 print(paste(c("para que la probabilidad de completar el album sin figuritas repetidas sea mayor o igual a 0.9 se necesitan ",sobresNec), collapse = " "))
+
+#OBJETIVO 3= El valor esperado de la cantidad de sobres necesarios para completar el ´album del mundial de Rusia.
 esp<-esperanza(nRepRusiaSinRepetidos ,tam_muestra,min(nRepRusiaSinRepetidos),max(nRepRusiaSinRepetidos))
 print(paste(c('La esperanza sin figuritas repetidas es ',esp,collapse=' ')))
+
+#OBJETIVO 4= El desvio estandar de la cantidad de sobres necesarios para completar el ´album
 print(paste(c('El desvio estandar sin figuritas repetidas es ',desvio(nRepRusiaSinRepetidos,tam_muestra)),collapse=' '))
 hist(nRepRusiaSinRepetidos)
