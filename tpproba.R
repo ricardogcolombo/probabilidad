@@ -18,7 +18,7 @@ album_lleno = function(album){
   return(r)
 }
 #ejercicio 3
-generar_sobre = function(tam_album, tam_sobre,repetidos=FALSE){
+generar_sobre = function(tam_album, tam_sobre,repetidos){
   # el booleano en replace hace que me de repetidos o no dentro del sobre
   sobre <- sample(tam_album,tam_sobre,replace=repetidos)
   return(sobre)
@@ -34,7 +34,7 @@ pegar_sobre = function(album,  sobre){
 }
 
 #ejercicio 5
-cuantas_figuritas = function(tam_album, tam_sobre,repetidos=FALSE){
+cuantas_figuritas = function(tam_album, tam_sobre,repetidos){
   estaCompleto <- FALSE
   album1 <- rep(FALSE,tam_album)
   contAlbum <- 0
@@ -59,10 +59,9 @@ print(cuantas_figuritas(6,1))
 print(cuantas_figuritas(6,1))
 
 #ej 7
-
-
 probSobres = function(nRepRusia,limite,tam_muestra){
   valorProb <- 0
+  #sumo los valores que dan menor al limite para obtener la probabilidad de que con el limite o menos se cumpla
   for (i in nRepRusia) {
     if (i <= limite){
       valorProb = valorProb + 1
@@ -71,7 +70,6 @@ probSobres = function(nRepRusia,limite,tam_muestra){
   x <-valorProb/tam_muestra
   return(x)
 }
-
 
 #- La cantidad de sobres que hacen falta comprar para completar el album con probabilidad mayor o igual a 0.9.
 sobres_necesarios = function(nRepRusia,tam_muestra,cantSobresInicial){
@@ -88,8 +86,11 @@ sobres_necesarios = function(nRepRusia,tam_muestra,cantSobresInicial){
 esperanza = function(nRepRusia,tam_muestra,min,max){
   esperanza <-0
   for(i in min:max){
+    #calculo la probabilidad puntual
     probmenos1 <-probSobres(nRepRusia,i-1,tam_muestra)
+    #el de probabilidad menos 1 se lo resto al actual para que me de la puntual y no la acumulada
     prob <-probSobres(nRepRusia,i,tam_muestra)-probmenos1
+    
     esperanza <- esperanza + i*prob
   }
   return(esperanza)
@@ -100,17 +101,23 @@ esperanza = function(nRepRusia,tam_muestra,min,max){
 desvio = function(nRepRusia,tam_muestra){
   minimo<-min(nRepRusia)
   maximo<-max(nRepRusia)
+  #calculo esperanza
   esp <- esperanza(nRepRusia,tam_muestra,minimo,maximo)
   esperanza2 <-0
+  #calculo esperanza x^2
   for(i in minimo:maximo){
     probmenos1<-probSobres(nRepRusia,i-1,tam_muestra)
     prob <-probSobres(nRepRusia,i,tam_muestra)-probmenos1
     
     esperanza2 <- esperanza2 + i*i*prob
   }
+  #obtengo la esperanza al cuadrado
   espAl2<-esp*esp
+  #calculo la varianza
   varianza<- esperanza2 - espAl2
   print(paste(c('la varianza es ',varianza)))
+  
+  #obtengo el desvio a partir de la varianza
   desvio<-sqrt(varianza)
   return(desvio)
 }
