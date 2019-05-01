@@ -12,13 +12,14 @@ print(x1)
 #ejercicio2
 album_lleno = function(album){
   r <- TRUE
+  #como es un arreglo de booleanos debo solo hacer un and entre todas las posiciones para ver si esta lleno
   for (i in 1:length(album)) {
     r = r && album[i]
   }
   return(r)
 }
 #ejercicio 3
-generar_sobre = function(tam_album, tam_sobre,repetidos){
+generar_sobre = function(tam_album, tam_sobre,repetidos=TRUE){
   # el booleano en replace hace que me de repetidos o no dentro del sobre
   sobre <- sample(tam_album,tam_sobre,replace=repetidos)
   return(sobre)
@@ -34,7 +35,7 @@ pegar_sobre = function(album,  sobre){
 }
 
 #ejercicio 5
-cuantas_figuritas = function(tam_album, tam_sobre,repetidos){
+cuantas_figuritas = function(tam_album, tam_sobre,repetidos=FALSE){
   estaCompleto <- FALSE
   album1 <- rep(FALSE,tam_album)
   contAlbum <- 0
@@ -129,7 +130,7 @@ tam_sobreRusia <- 5
 tam_muestra <-1000
 nRepRusia <- c(1:tam_muestra)
 for (i in 1:tam_muestra) {
-  nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,FALSE)
+  nRepRusia[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,TRUE)
 }
 #print(nRepRusia)
 
@@ -147,13 +148,13 @@ print(paste(c('La esperanza es ',esp,collapse=' ')))
 #OBJETIVO 4= El desvio estandar de la cantidad de sobres necesarios para completar el ´album
 print(paste(c('El desvio estandar es ',desvio(nRepRusia,tam_muestra)),collapse=' '))
 #Dibujo la distribucion
-hist(nRepRusia)
+hist(nRepRusia,main='Histograma de la distribucion completando el album con repetidos')
 
 #ejercicio 8
 
 nRepRusiaSinRepetidos <- c(1:tam_muestra)
 for (i in 1:tam_muestra) {
-  nRepRusiaSinRepetidos[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,TRUE)
+  nRepRusiaSinRepetidos[i] = cuantas_figuritas(tam_rusia,tam_sobreRusia,FALSE)
 }
 
 #-OBJETIVO 1=- La probabilidad de completar el ´album con 800 sobres o menos.
@@ -169,4 +170,4 @@ print(paste(c('La esperanza sin figuritas repetidas es ',esp,collapse=' ')))
 
 #OBJETIVO 4= El desvio estandar de la cantidad de sobres necesarios para completar el ´album
 print(paste(c('El desvio estandar sin figuritas repetidas es ',desvio(nRepRusiaSinRepetidos,tam_muestra)),collapse=' '))
-hist(nRepRusiaSinRepetidos)
+hist(nRepRusiaSinRepetidos,main='Histograma de la distribucion completando el album sin repetidos')
