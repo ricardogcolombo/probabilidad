@@ -1,38 +1,21 @@
----
-title: "TP Proba 2"
-output:
-  html_document:
-    df_print: paged
-  html_notebook: default
----
-
-Calcular analiticamente los estimadores de momentos bmom y maxima verosimilitud bmv.Implementar los estos estimadores en R como funciones
-
-```{r}
+#Ej 1
 momentosUniforme <- function(b,data){
   
   prom <- mean(data)
   return(2*prom)
 }
 
-```
 
-```{r}
 EMVUniforme <- function(data){
   
   return(max(unlist(data)))
 }
-```
 #Ej 2
-```{r}
 bmed <- function(data){
   
   return(2*(median(data)))
 }
-````
 #Ej 3
-
-```{r}
 muestra <- runif(15,0,1)
 em <- momentosUniforme(1,muestra)
 print(paste0("Estimador de Momentos " , em))
@@ -41,9 +24,3 @@ print(paste0("EMV = ",emv))
 bm <- bmed(muestra)
 print(paste0("BMed = ",bm))
 print(paste0('Error= ',em-emv ))
-
-```
-
-# Ej 4
-
-
