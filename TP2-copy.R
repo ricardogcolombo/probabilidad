@@ -58,8 +58,8 @@ print(paste0("Sesgo Bmv = ",sesgoBmv))
 for (i in 1:Nrep) {
   for (j in i:Nrep){
     varBme = varBme + (bme[i] - bme[j])^2 
-    varBmo = varBmo + (bme[i] - bme[j])^2
-    varBmv = varBmv + (bme[i] - bme[j])^2
+    varBmo = varBmo + (bmo[i] - bmo[j])^2
+    varBmv = varBmv + (bmv[i] - bmv[j])^2
   }
 }
 
@@ -77,4 +77,102 @@ ecmBmo = varianzaBmo + sesgoBmo^2
 print(paste0("ECM Bmo = ",ecmBmo))
 ecmBmv = varianzaBmv + sesgoBmv^2
 print(paste0("ECM Bmv = ",ecmBmv))
+}
+
+#ejercicio 5
+
+simulacion_mv <- function(b,n){
+  
+  Nrep <-1000
+  bmv <- c(1:Nrep)
+  for (i in 1:Nrep) {
+    muestra <- runif(15,0,1)
+    bmv[i] <- EMVUniforme(muestra)
+  }
+  #suma de muestreo
+  for (i in 1:Nrep) {
+    
+    sumaBmv = sumaBmv + bmv[i]
+  }
+  
+  #sesgo
+
+  sesgoBmv = 1 - sumaBmv / Nrep
+  print(paste0("Sesgo Bmv = ",sesgoBmv))
+  
+  #varianza
+  
+  for (i in 1:Nrep) {
+    for (j in i:Nrep){
+      varBmv = varBmv + (bmv[i] - bmv[j])^2
+    }
+  }
+  
+  varianzaBmv = 1/(Nrep^2) * varBmv
+  print(paste0("varianza Bmv = ",varianzaBmv))
+  
+}
+
+simulacion_mom <- function(b,n){
+  
+  Nrep <-1000
+  bmo <- c(1:Nrep)
+  for (i in 1:Nrep) {
+    muestra <- runif(15,0,1)
+    bmo[i] <- EMVUniforme(muestra)
+  }
+  #suma de muestreo
+  for (i in 1:Nrep) {
+    
+    sumaBmo = sumaBmo + bmo[i]
+  }
+  
+  #sesgo
+  
+  sesgoBmo = 1 - sumaBmo / Nrep
+  print(paste0("Sesgo Bmo = ",sesgoBmo))
+  
+  #varianza
+  
+  for (i in 1:Nrep) {
+    for (j in i:Nrep){
+      varBmo = varBmo + (bmo[i] - bmo[j])^2
+    }
+  }
+  
+  varianzaBmo = 1/(Nrep^2) * varBmo
+  print(paste0("varianza Bmo = ",varianzaBmo))
+  
+}
+
+simulacion_med <- function(b,n){
+  
+  Nrep <-1000
+  bme <- c(1:Nrep)
+  for (i in 1:Nrep) {
+    muestra <- runif(15,0,1)
+    bme[i] <- EMVUniforme(muestra)
+  }
+  #suma de muestreo
+  for (i in 1:Nrep) {
+    
+    sumaBme = sumaBme + bme[i]
+  }
+  
+  #sesgo
+  
+  sesgoBme = 1 - sumaBme / Nrep
+  print(paste0("Sesgo Bme = ",sesgoBme))
+  
+  #varianza
+  
+  for (i in 1:Nrep) {
+    for (j in i:Nrep){
+      varBme = varBme + (bme[i] - bme[j])^2
+    }
+  }
+  
+  varianzaBme = 1/(Nrep^2) * varBme
+  print(paste0("varianza Bme = ",varianzaBme))
+  
 }
