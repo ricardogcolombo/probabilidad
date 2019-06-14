@@ -27,7 +27,7 @@ EMVUniforme <- function(data){
 ```{r}
 bmed <- function(data){
   
-  return(2*(mean(data)))
+  return(2*(median(data)))
 }
 ````
 #Ej 3
