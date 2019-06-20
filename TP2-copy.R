@@ -270,4 +270,16 @@ ggplot(data_ej7, aes(n,value, col=variable)) + geom_line()
 
 
 #ejercicio 8
-muestra8= c(0.917,0.247,0.384, 0.530,0.798,0.912,0.096,0.684,0.394,20.1,0.769,0.137,0.352 ,0.332,0.670)
+muestra8= sort(c(0.917,0.247,0.384, 0.530,0.798,0.912,0.096,0.684,0.394,20.1,0.769,0.137,0.352 ,0.332,0.670))
+ej8momentos<-momentosUniforme(muestra8)
+ej8mv<- EMVUniforme(muestra8)
+ej8med<-bmed(muestra8)
+
+
+
+
+
+#Ejercicio 9
+muestra9 <- runif(15,0,1)
+
+
