@@ -99,19 +99,12 @@ simulacion_mv <- function(b,n,Nrep=1000){
   }
   
   #sesgo
-  
   sesgoBmv = 1 - sumaBmv / Nrep
+  
   #print(paste0("Sesgo Bmv = ",sesgoBmv))
   
   #varianza
-  varBmv=0
-  for (i in 1:Nrep) {
-    for (j in i:Nrep){
-      varBmv = varBmv + (bmv[i] - bmv[j])^2
-    }
-  }
-  
-  varianzaBmv = 1/(Nrep^2) * varBmv
+  varianzaBmv = var(bmv)
   #print(paste0("varianza Bmv = ",varianzaBmv))
   
   
@@ -138,14 +131,7 @@ simulacion_mom <- function(b,n,Nrep=1000){
   #print(paste0("Sesgo Bmo = ",sesgoBmo))
   
   #varianza
-  varBmo=0
-  for (i in 1:Nrep) {
-    for (j in i:Nrep){
-      varBmo = varBmo + (bmo[i] - bmo[j])^2
-    }
-  }
-  
-  varianzaBmo = 1/(Nrep^2) * varBmo
+  varianzaBmo = var(bmo)
   #print(paste0("varianza Bmo = ",varianzaBmo))
   
   ecmBmo = varianzaBmo+sesgoBmo^2
@@ -170,14 +156,7 @@ simulacion_med <- function(b,n,Nerp=1000){
   #print(paste0("Sesgo Bme = ",sesgoBme))
   
   #varianza
-  varBme=0
-  for (i in 1:Nrep) {
-    for (j in i:Nrep){
-      varBme = varBme + (bme[i] - bme[j])^2
-    }
-  }
-  
-  varianzaBme = 1/(Nrep^2) * varBme
+  varianzaBme = var(bme)
   #print(paste0("varianza Bme = ",varianzaBme))
   
   ecmBme = varianzaBme+sesgoBme^2
@@ -276,10 +255,7 @@ ej8mv<- EMVUniforme(muestra8)
 ej8med<-bmed(muestra8)
 
 
-
-
-
 #Ejercicio 9
 muestra9 <- runif(15,0,1)
 
-
+muestra9F <-Map(function(x){return(x*.05)},muestra9)
