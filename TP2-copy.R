@@ -31,48 +31,32 @@ ejercicio3 <-function(){
 }
 
 #Ej 4
-ejercicio4 <- function(){
-  Nrep <-1000
+ejercicio4 <- function(b,n,Nrep=1000){
   bme <- c(1:Nrep)
   bmo <- c(1:Nrep)
   bmv <- c(1:Nrep)
   for (i in 1:Nrep) {
-    muestra <- runif(15,0,1)
+    muestra <- runif(n,0,b)
     bme[i] <- bmed(muestra)
-    bmo[i] <- momentosUniforme(1,muestra)
+    bmo[i] <- momentosUniforme(muestra)
     bmv[i] <- EMVUniforme(muestra)
   }
-  #suma de muestreo
-  for (i in 1:Nrep) {
-    
-    sumaBme = sumaBme + bme[i]
-    sumaBmo = sumaBmo + bmo[i]
-    sumaBmv = sumaBmv + bmv[i]
-  }
+
   
   #sesgo
-  sesgoBme = 1 - sumaBme / Nrep
+  sesgoBme = b - sum(bme) / Nrep
   print(paste0("Sesgo Bme = ",sesgoBme))
-  sesgoBmo = 1 - sumaBmo / Nrep
+  sesgoBmo = b - sum(bmo) / Nrep
   print(paste0("Sesgo Bmo = ",sesgoBmo))
-  sesgoBmv = 1 - sumaBmv / Nrep
+  sesgoBmv = b - sum(bmv) / Nrep
   print(paste0("Sesgo Bmv = ",sesgoBmv))
   
   #varianza
-  
-  for (i in 1:Nrep) {
-    for (j in i:Nrep){
-      varBme = varBme + (bme[i] - bme[j])^2 
-      varBmo = varBmo + (bmo[i] - bmo[j])^2
-      varBmv = varBmv + (bmv[i] - bmv[j])^2
-    }
-  }
-  
-  varianzaBme = 1/(Nrep^2) * varBme
+  varianzaBme =var(bme)
   print(paste0("varianza Bme = ",varianzaBme))
-  varianzaBmo = 1/(Nrep^2) * varBmo
+  varianzaBmo = var(bmo)
   print(paste0("varianza Bmo = ",varianzaBmo))
-  varianzaBmv = 1/(Nrep^2) * varBmv
+  varianzaBmv = var(bmv)
   print(paste0("varianza Bmv = ",varianzaBmv))
   
   #ecm
@@ -92,14 +76,9 @@ simulacion_mv <- function(b,n,Nrep=1000){
     muestra <- runif(n,0,b)
     bmv[i] <- EMVUniforme(muestra)
   }
-  sumaBmv<-0
-  #suma de muestreo
-  for (i in 1:Nrep) {
-    sumaBmv = sumaBmv + bmv[i]
-  }
   
   #sesgo
-  sesgoBmv = 1 - sumaBmv / Nrep
+  sesgoBmv = b - sum(bmv) / Nrep
   
   #print(paste0("Sesgo Bmv = ",sesgoBmv))
   
@@ -119,15 +98,9 @@ simulacion_mom <- function(b,n,Nrep=1000){
     muestra <- runif(n,0,b)
     bmo[i] <- momentosUniforme(muestra)
   }
-  #suma de muestreo
-  sumaBmo<-0
-  for (i in 1:Nrep) {
-    sumaBmo = sumaBmo + bmo[i]
-  }
-  
   #sesgo
   
-  sesgoBmo = 1 - sumaBmo / Nrep
+  sesgoBmo = b - sum(bmo) / Nrep
   #print(paste0("Sesgo Bmo = ",sesgoBmo))
   
   #varianza
@@ -144,15 +117,9 @@ simulacion_med <- function(b,n,Nerp=1000){
     muestra <- runif(n,0,b)
     bme[i] <- bmed(muestra)
   }
-  #suma de muestreo
-  sumaBme<-0
-  
-  for (i in 1:Nrep) {
-    sumaBme <- sumaBme + bme[i]
-  }
-  
+
   #sesgo
-  sesgoBme = 1 - sumaBme / Nrep
+  sesgoBme = b - sum(bme) / Nrep
   #print(paste0("Sesgo Bme = ",sesgoBme))
   
   #varianza
