@@ -111,6 +111,10 @@ simulacion_mv <- function(b,n){
   varianzaBmv = 1/(Nrep^2) * varBmv
   print(paste0("varianza Bmv = ",varianzaBmv))
   
+  
+  ecmBmv = varianzaBmv+sesgoBmv^2
+  return(list(sesgo = sesgoBmv,varianza=varianzaBmv,ecm=ecmBmv))
+  
 }
 
 simulacion_mom <- function(b,n){
@@ -143,6 +147,9 @@ simulacion_mom <- function(b,n){
   varianzaBmo = 1/(Nrep^2) * varBmo
   print(paste0("varianza Bmo = ",varianzaBmo))
   
+  ecmBmo = varianzaBmo+sesgoBmo^2
+  return(list(sesgo = sesgoBmo,varianza=varianzaBmo,ecm=ecmBmo))
+  
 }
 
 simulacion_med <- function(b,n){
@@ -174,5 +181,8 @@ simulacion_med <- function(b,n){
   
   varianzaBme = 1/(Nrep^2) * varBme
   print(paste0("varianza Bme = ",varianzaBme))
-  
+
+  ecmBme = varianzaBme+sesgoBme^2
+  return(list(sesgo = sesgoBme,varianza=varianzaBme,ecm=ecmBme))
 }
+
