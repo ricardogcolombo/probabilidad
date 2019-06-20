@@ -99,7 +99,6 @@ simulacion_mom <- function(b,n,Nrep=1000){
     bmo[i] <- momentosUniforme(muestra)
   }
   #sesgo
-  
   sesgoBmo = b - sum(bmo) / Nrep
   #print(paste0("Sesgo Bmo = ",sesgoBmo))
   
@@ -172,6 +171,7 @@ calcularEj6 <- function(n,bes){
   
   return(list(sesgo=resultsesgo,varianza=resultvarianza,ecm=resultecms))
 }
+
 data_ej6<-calcularEj6(15,bes)
 ej6_plotsesgo <-function(data_ej6){
   sesgo <-melt(data_ej6$sesgo,id.vars='b')
@@ -187,8 +187,9 @@ ej6_plotecm <-function(data_ej6){
   ecm<-melt(data_ej6$varianza,id.vars='b')
   ggplot(ecm, aes(b,value, col=variable)) + geom_boxplot()
 }
-
-
+ej6_plotsesgo(data_ej6 )
+ej6_plotvarianza(data_ej6 )
+ej6_plotecm(data_ej6 )
 #ejercicio 7
 b_6 = 1
 nes = c(15,30,60,120,240)
@@ -225,4 +226,44 @@ ej8med<-bmed(muestra8)
 #Ejercicio 9
 muestra9 <- runif(15,0,1)
 
-muestra9F <-Map(function(x){return(x*.05)},muestra9)
+calcularEjercicio9 <-function(n=15,b=1,Nrep=1000,m){
+  totalMal<-0
+  bme <- c(1:Nrep)
+  bmv <- c(1:Nrep)
+  bmo <- c(1:Nrep)
+  
+  for(j in 1:Nrep){
+    t<-rbinom(n,1,0.005)
+    mAux<-m
+    #contamino la muestra
+    for(i in 1:n){
+      if(t[i]==1){
+        mAux[i]=mAux[i]*100
+        totalMal=totalMal+1
+      }
+    }
+    bme[j]<-bmed(mAux)
+    bmv[j]<-EMVUniforme(mAux)
+    bmo[j] <- momentosUniforme(mAux)
+  }
+  
+  #Bmed
+  sesgoBme = b - sum(bme) / Nrep
+  varianzaBme = var(bme)
+  ecmBme = varianzaBme+sesgoBme^2
+
+  #Momentos
+  sesgoBmo = b - sum(bmo) / Nrep
+  varianzaBmo = var(bmo)
+  ecmBmo = varianzaBmo+sesgoBmo^2
+  
+  #Maxima verosimilitud
+  sesgoBmv = b - sum(bmv) / Nrep
+  varianzaBmv = var(bmv)
+  ecmBmv = varianzaBmv+sesgoBmv^2
+  
+  
+  totalMal<-totalMal/1000
+  print(totalMal)
+  return(list(probabilidad=totalMal,sesgo=sesgoBme,varianza,ecm))
+}
