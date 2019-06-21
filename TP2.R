@@ -19,7 +19,7 @@ bmed <- function(data){
 #Ej 3
 
 muestra <- runif(15,0,1)
-em <- momentosUniforme(1,muestra)
+em <- momentosUniforme(muestra)
 print(paste0("Estimador de Momentos " , em))
 emv <- EMVUniforme(muestra)
 print(paste0("EMV = ",emv))
