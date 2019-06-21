@@ -1,4 +1,3 @@
-X11()
 
 library(ggplot2)
 
@@ -19,16 +18,14 @@ bmed <- function(data){
 }
 #Ej 3
 
-ejercicio3 <-function(){
-  muestra <- runif(15,0,1)
-  em <- momentosUniforme(1,muestra)
-  print(paste0("Estimador de Momentos " , em))
-  emv <- EMVUniforme(muestra)
-  print(paste0("EMV = ",emv))
-  bm <- bmed(muestra)
-  print(paste0("BMed = ",bm))
-  print(paste0('Error= ',em-emv ))
-}
+muestra <- runif(15,0,1)
+em <- momentosUniforme(1,muestra)
+print(paste0("Estimador de Momentos " , em))
+emv <- EMVUniforme(muestra)
+print(paste0("EMV = ",emv))
+bm <- bmed(muestra)
+print(paste0("BMed = ",bm))
+print(paste0('Error= ',em-emv ))
 
 #Ej 4
 ejercicio4 <- function(b,n,Nrep=1000){
@@ -67,9 +64,13 @@ ejercicio4 <- function(b,n,Nrep=1000){
   ecmBmv = varianzaBmv + sesgoBmv^2
   print(paste0("ECM Bmv = ",ecmBmv))
 }
-
+ejercicio4(1,15)
 #ejercicio 5
-#return(list(sesgo = sesgoBmv,varianza=varianzaBmv,ecm=ecmBmv))
+#input: b limite uniforme, valor minimo es 0
+#      n tamaño de la muestra,
+#      Nrep repeticiones
+#Output
+# return list(sesgo = sesgoBmv,varianza=varianzaBmv,ecm=ecmBmv))
 simulacion_mv <- function(b,n,Nrep=1000){
   bmv <- c(1:Nrep)
   for (i in 1:Nrep) {
@@ -91,6 +92,11 @@ simulacion_mv <- function(b,n,Nrep=1000){
   return(list(sesgo = sesgoBmv,varianza=varianzaBmv,ecm=ecmBmv))
   
 }
+
+#input: b limite uniforme, valor minimo es 0
+#      n tamaño de la muestra,
+#      Nrep repeticiones
+#Output
 #return(list(sesgo = sesgoBmo,varianza=varianzaBmo,ecm=ecmBmo))
 simulacion_mom <- function(b,n,Nrep=1000){
   bmo <- c(1:Nrep)
@@ -109,6 +115,10 @@ simulacion_mom <- function(b,n,Nrep=1000){
   ecmBmo = varianzaBmo+sesgoBmo^2
   return(list(sesgo = sesgoBmo,varianza=varianzaBmo,ecm=ecmBmo))
 }
+#input: b limite uniforme, valor minimo es 0
+#      n tamaño de la muestra,
+#      Nrep repeticiones
+#Output
 #return(list(sesgo = sesgoBme,varianza=varianzaBme,ecm=ecmBme))
 simulacion_med <- function(b,n,Nerp=1000){
   bme <- c(1:Nrep)
@@ -138,6 +148,11 @@ while (current < 2){
   bes<- append(bes,current)
   current<-current+0.1
 }
+#input: 
+#      n tamaño de la muestra,
+#      bes array con valores para b
+#Output
+# return(list(sesgo=resultsesgo,varianza=resultvarianza,ecm=resultecms))
 calcularEj6 <- function(n,bes){
   sesgosmv<-c()
   sesgosmo<-c()
@@ -171,25 +186,27 @@ calcularEj6 <- function(n,bes){
   
   return(list(sesgo=resultsesgo,varianza=resultvarianza,ecm=resultecms))
 }
-
 data_ej6<-calcularEj6(15,bes)
+
 ej6_plotsesgo <-function(data_ej6){
   sesgo <-melt(data_ej6$sesgo,id.vars='b')
-  ggplot(sesgo, aes(b,value, col=variable)) + geom_boxplot()
+  ggplot(sesgo, aes(b,value, col=variable)) + geom_line()+ggtitle("Sesgo de los estimadores")
 }
 
 ej6_plotvarianza<-function(data_ej6){
   varianza<-melt(data_ej6$varianza,id.vars='b')
-  ggplot(varianza, aes(b,value, col=variable)) + geom_boxplot()
+  ggplot(varianza, aes(b,value, col=variable)) + geom_line()+ggtitle("Varianza de los estimadores")
 }
 
 ej6_plotecm <-function(data_ej6){
-  ecm<-melt(data_ej6$varianza,id.vars='b')
-  ggplot(ecm, aes(b,value, col=variable)) + geom_boxplot()
+  ecm<-melt(data_ej6$ecm,id.vars='b')
+  ggplot(ecm, aes(b,value, col=variable)) + geom_line()+ggtitle("ECM de los estimadores")
 }
 ej6_plotsesgo(data_ej6 )
 ej6_plotvarianza(data_ej6 )
 ej6_plotecm(data_ej6 )
+data_ej6
+
 #ejercicio 7
 b_6 = 1
 nes = c(15,30,60,120,240)
@@ -214,26 +231,29 @@ calcularEj7 <- function(b,nes){
 }
 data_ej7 = calcularEj7(b_6,nes)
 ggplot(data_ej7, aes(n,value, col=variable)) + geom_line()
-
+data_ej7
 
 #ejercicio 8
 muestra8= sort(c(0.917,0.247,0.384, 0.530,0.798,0.912,0.096,0.684,0.394,20.1,0.769,0.137,0.352 ,0.332,0.670))
 ej8momentos<-momentosUniforme(muestra8)
 ej8mv<- EMVUniforme(muestra8)
 ej8med<-bmed(muestra8)
-
+barplot(unlist(list(momentos=ej8momentos,maximavm=ej8mv,bmed=ej8med)),main='valor del estimador',horiz=TRUE,)
+print(paste0("Estimador de Momentos Ej8 " , ej8momentos))
+print(paste0("Estimador de maxima verosimilitud Ej8 " , ej8mv))
+print(paste0("Estimador de bmed Ej8 " , ej8med))
 
 #Ejercicio 9
 muestra9 <- runif(15,0,1)
 
-calcularEjercicio9 <-function(n=15,b=1,Nrep=1000,m){
+calcularEjercicio9 <-function(n=15,b=1,Nrep=1000,m,p=0.005){
   totalMal<-0
   bme <- c(1:Nrep)
   bmv <- c(1:Nrep)
   bmo <- c(1:Nrep)
   
   for(j in 1:Nrep){
-    t<-rbinom(n,1,0.005)
+    t<-rbinom(n,1,p)
     mAux<-m
     #contamino la muestra
     for(i in 1:n){
@@ -267,4 +287,6 @@ calcularEjercicio9 <-function(n=15,b=1,Nrep=1000,m){
   print(totalMal)
   return(list(probabilidad=totalMal,sesgoBme=sesgoBme,varianzaBme=varianzaBme,ecmBme=ecmBme,sesgoBmo=sesgoBmo,varianzaBmo=varianzaBmo,ecmBmo=ecmBmo,sesgoBmv=sesgoBmv,varianzaBmv=varianzaBmv,ecmBmv=ecmBmv))
 }
-calcularEjercicio9(m=muestra9)
+ej9<-calcularEjercicio9(m=muestra9,p=0.5)
+#dentro de esta lista estan todos los valores(probabilidad, sesgos, varianzas y ecm para todos los estimadores)
+ej9
