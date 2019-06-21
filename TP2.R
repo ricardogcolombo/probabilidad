@@ -19,7 +19,7 @@ bmed <- function(data){
 #Ej 3
 
 muestra <- runif(15,0,1)
-em <- momentosUniforme(1,muestra)
+em <- momentosUniforme(muestra)
 print(paste0("Estimador de Momentos " , em))
 emv <- EMVUniforme(muestra)
 print(paste0("EMV = ",emv))
@@ -165,6 +165,7 @@ calcularEj6 <- function(n,bes){
   ecmsmed<-c()
   
   for (i in 1:length(bes)){
+    #para cada b calculo los estmiadores, sesgos, varianzas y ecm
     ecmBmv<-simulacion_mv(bes[i],n)
     sesgosmv<-append(sesgosmv,ecmBmv$sesgo)
     varianzasmv<-append(varianzasmv,ecmBmv$varianza)
@@ -180,6 +181,7 @@ calcularEj6 <- function(n,bes){
     varianzasmed<-append(varianzasmed,ecmBmed$varianza)
     ecmsmed<-append(ecmsmed,ecmBmed$ecm)
   }
+  #creo data frame para poder manejarlos mejor con ggplot
   resultsesgo <- data.frame(b=bes,sesgosmv,sesgosmo,sesgosmed)
   resultvarianza <- data.frame(b=bes,varianzasmv,varianzasmo,varianzasmed)
   resultecms <- data.frame(b=bes,ecmsmv,ecmsmo,ecmsmed)
@@ -215,7 +217,7 @@ calcularEj7 <- function(b,nes){
   ecmsmv<-c()
   ecmsmo<-c()
   ecmsmed<-c()
-  
+  #para cada n calculo la simulacion y obtengo los estimadores
   for (i in 1:length(nes)){
     Bmv<-simulacion_mv(b,nes[i])
     ecmsmv<-append(ecmsmv,Bmv$ecm)
