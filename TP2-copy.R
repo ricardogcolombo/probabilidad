@@ -265,5 +265,6 @@ calcularEjercicio9 <-function(n=15,b=1,Nrep=1000,m){
   
   totalMal<-totalMal/1000
   print(totalMal)
-  return(list(probabilidad=totalMal,sesgo=sesgoBme,varianza,ecm))
+  return(list(probabilidad=totalMal,sesgoBme=sesgoBme,varianzaBme=varianzaBme,ecmBme=ecmBme,sesgoBmo=sesgoBmo,varianzaBmo=varianzaBmo,ecmBmo=ecmBmo,sesgoBmv=sesgoBmv,varianzaBmv=varianzaBmv,ecmBmv=ecmBmv))
 }
+calcularEjercicio9(m=muestra9)
